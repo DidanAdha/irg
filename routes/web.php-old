@@ -1,0 +1,82 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+Auth::routes();
+Route::get('/', function () {
+    return redirect('login');
+});
+
+Route::get('/home', 'UserController@dashboard')->middleware('auth');
+// Route::get('/home', 'HomeController@index')->name('home')->middleware('role');
+
+
+Route::get('/feedback', 'FeedbackController@all')->middleware('auth');
+Route::get('/feedback_user/{id}', 'FeedbackController@find')->middleware('auth');
+Route::post('/feedback_user/replay/{id}', 'MailController@sendMail')->name('sendMail');
+Route::get('/testing', 'AnalisController@test')->middleware('auth');
+Route::get('/fasilitas', 'FasilitasController@all')->middleware('auth');
+Route::get('/menutype', 'MenuTypeController@all')->middleware('auth');
+Route::get('/restotype', 'RestaurantTypeController@all')->middleware('auth');
+Route::get('/fasilitas/input', function () {
+    return view('master.fasilitasInput');
+})->middleware('auth');
+
+Route::get('/restotype/input', function () {
+    return view('master.TrestoInput');
+})->middleware('auth');
+Route::get('/menutype/input', function () {
+    return view('master.menuInput');
+})->middleware('auth');
+Route::post('/restotype/insert', 'RestaurantTypeController@insert')->middleware('auth');
+Route::post('/menutype/insert', 'MenuTypeController@insert')->middleware('auth');
+Route::post('/fasilitas/insert', 'FasilitasController@insert')->middleware('auth');
+Route::get('/restotype/edit/{id}', 'RestaurantTypeController@edit')->middleware('auth');
+Route::get('/menutype/edit/{id}', 'MenuTypeController@edit')->middleware('auth');
+Route::get('/fasilitas/edit/{id}', 'FasilitasController@edit')->middleware('auth');
+Route::post('/restotype/update/{id}', 'RestaurantTypeController@update')->middleware('auth');
+Route::post('/menutype/update/{id}', 'MenuTypeController@update')->middleware('auth');
+Route::post('/fasilitas/update/{id}', 'FasilitasController@update')->middleware('auth');
+Route::delete('/restotype/delete/{id}', 'RestaurantTypeController@destroy')->middleware('auth');
+Route::delete('/menutype/delete/{id}', 'MenuTypeController@destroy')->middleware('auth');
+Route::delete('/fasilitas/delete/{id}', 'FasilitasController@destroy')->middleware('auth');
+    // Route::get('/useradmin', 'UserController@admin')->middleware('auth');
+    // Route::get('/userbiasa', 'UserController@biasa')->middleware('auth');
+Route::get('/report', 'ReportController@all')->middleware('auth');
+Route::get('/report/{id}', 'ReportController@cek')->middleware('auth');
+
+
+
+
+
+Route::get('/role/input', function () {
+    return view('master.roleInput');
+})->middleware('auth');
+Route::delete('resto/delete/{id}', 'RestaurantController@destroy')->middleware('auth');
+Route::get('/resto/non/{id}', 'RestaurantController@non')->middleware('auth');
+Route::get('/resto/act/{id}', 'RestaurantController@act')->middleware('auth');
+Route::get('/input', 'UserController@role')->middleware('auth');
+Route::delete('user/delete/{id}', 'UserController@destroy')->middleware('auth');
+Route::post('/user/update/{id}', 'UserController@update')->middleware('auth');
+Route::get('/user/non/{id}', 'UserController@non')->middleware('auth');
+Route::get('/user/act/{id}', 'UserController@act')->middleware('auth');
+Route::post('/user/insert', 'UserController@insert')->name('input')->middleware('auth');
+Route::get('/user/edit/{id}', 'UserController@edit')->middleware('auth');
+Route::get('/analisis', 'AnalisController@all')->middleware('auth');
+Route::get('/analisis/resto/{id}', 'AnalisController@sort')->middleware('auth');
+Route::get('/user/status/{id}', 'UserController@status')->middleware('auth');
+Route::delete('/role/delete/{id}', 'RoleController@destroy')->middleware('auth');
+Route::post('/role/update/{id}', 'RoleController@update')->middleware('auth');
+Route::get('/role/edit/{id}', 'RoleController@edit')->middleware('auth');
+Route::post('/role/insert', 'RoleController@insert')->middleware('auth');
+Route::get('/role', 'RoleController@all')->middleware('auth');
